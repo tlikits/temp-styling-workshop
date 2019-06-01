@@ -1,0 +1,64 @@
+
+.big-image, .information, .shopnow, .seemore, .small-image {
+    border: 1px solid #000000;
+}
+img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+
+
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+.big-image {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    max-width: 300px;
+    width: 100%;
+}
+
+    .hero {
+    }
+
+.detail {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1
+}
+.information {
+    display: flex;
+    flex-grow: 1;
+}
+
+    .small-image{
+        max-width: 150px;
+        width: 100%;
+    }
+
+    .seemore{
+        flex-grow: 1;
+    }
+
+.shopnow {
+    display: flex;
+    flex-grow: 1;
+}
+
+
+@media (min-width: 321px) {
+    .container {
+        flex-direction: row;
+    }
+    .detail {
+        flex-direction: column-reverse;
+    }
+}
