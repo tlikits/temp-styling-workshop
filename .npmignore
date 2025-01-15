@@ -1,0 +1,4 @@
+# Ignore everything except dist/cli.js and package.json
+*
+!dist/cli.js
+!package.json
