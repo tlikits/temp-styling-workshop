@@ -1,10 +1,11 @@
 {
-  "name": "turtle-tools",
-  "version": "0.1.1",
-  "description": "Turtle tools for turtle developer.",
+  "name": "temp-styling-workshop",
+  "version": "0.0.1-alpha.0",
+  "description": "X.",
   "main": "dist/cli.js",
   "scripts": {
     "build": "webpack --config webpack.config.js",
+    "bump:patch": "npm version patch --git-tag-version=false",
     "prettier": "prettier --write 'src/**/*.ts'"
   },
   "keywords": [
