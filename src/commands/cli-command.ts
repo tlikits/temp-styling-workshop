@@ -1,6 +1,5 @@
 import { Command } from 'commander';
 
-export interface CliCommand<Options> {
+export interface CliCommand<Options = any> {
   install(program: Command): void;
-  run(str: string, options: Options): Promise<void>;
 }
