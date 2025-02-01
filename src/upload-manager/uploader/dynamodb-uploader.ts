@@ -2,10 +2,15 @@ import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
 import { marshall } from '@aws-sdk/util-dynamodb';
 import * as fs from 'fs';
 import * as path from 'path';
+import { GlobalConfiguration } from '../../global-configuration/global-configuration';
 import { DynamoDBUploadConfig } from '../interfaces';
 import { Uploader } from './uploader';
 
 export class DynamoDBUploader implements Uploader<DynamoDBUploadConfig> {
+  private dynamoDBClient!: DynamoDBClient;
+
+  constructor(private readonly globalConfig: GlobalConfiguration) {}
+
   public parse(targetpath: string, filepath: string): DynamoDBUploadConfig {
     const parsed = path.parse(filepath);
     const { dir } = parsed;
@@ -19,17 +24,9 @@ export class DynamoDBUploader implements Uploader<DynamoDBUploadConfig> {
   }
 
   public async upload(config: DynamoDBUploadConfig): Promise<void> {
+    this.ensureDynamoDBClient();
     const { filepath } = config;
-    console.log(`uploading to dynamodb: ${config.table} - ${filepath}`);
-
-    // Configure AWS credentials
-    const dynamoDB = new DynamoDBClient({
-      region: process.env.AWS_REGION,
-      credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-      },
-    });
+    console.debug(`Uploading to dynamodb: ${config.table} - ${filepath}`);
 
     // Read the file content
     const fileContent = fs.readFileSync(filepath, 'utf-8');
@@ -43,7 +40,20 @@ export class DynamoDBUploader implements Uploader<DynamoDBUploadConfig> {
       Item: marshalledItem,
     };
 
-    await dynamoDB.send(new PutItemCommand(params));
-    console.log('Uploaded to DynamoDB');
+    await this.dynamoDBClient.send(new PutItemCommand(params));
+    console.debug('Uploaded to DynamoDB');
+  }
+
+  private ensureDynamoDBClient(): void {
+    if (this.dynamoDBClient) {
+      return;
+    }
+    const awsProfile = this.globalConfig.getConfiguration('awsProfile');
+    if (!awsProfile) {
+      throw new Error('awsProfile is missing in the global configuration');
+    }
+    this.dynamoDBClient = new DynamoDBClient({
+      profile: awsProfile,
+    });
   }
 }

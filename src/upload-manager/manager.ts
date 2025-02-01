@@ -1,11 +1,5 @@
 import { ConfigStorage, UploadConfig } from './interfaces';
-import {
-  dynamodbUploader,
-  DynamoDBUploader,
-  s3Uploader,
-  S3Uploader,
-  Uploader,
-} from './uploader';
+import { dynamodbUploader, s3Uploader, Uploader } from './uploader';
 
 export interface UploadManager {
   setTargetPath(targetPath: string): void;
@@ -25,6 +19,10 @@ export class UploadManagerImpl implements UploadManager {
   public parseConfig(filepath: string): UploadConfig | undefined {
     const [_, storage] = filepath.split('/');
     const uploader = this.getUploaderByStorageType(storage);
+    if (!uploader) {
+      console.warn('Invalid uploader');
+      return;
+    }
     return uploader?.parse(this.targetPath, filepath);
   }
 
@@ -41,23 +39,16 @@ export class UploadManagerImpl implements UploadManager {
     config: UploadConfig,
   ): Uploader<UploadConfig> | undefined {
     const { type } = config;
-    switch (type) {
-      case ConfigStorage.DynamoDB:
-        return new DynamoDBUploader();
-      case ConfigStorage.S3:
-        return new S3Uploader();
-      default:
-        return;
-    }
+    return this.getUploaderByStorageType(type);
   }
 
   private getUploaderByStorageType(
-    storageType: string,
+    type: string,
   ): Uploader<UploadConfig> | undefined {
-    switch (storageType) {
-      case 'dynamodb':
+    switch (type) {
+      case ConfigStorage.DynamoDB:
         return dynamodbUploader;
-      case 's3':
+      case ConfigStorage.S3:
         return s3Uploader;
       default:
         return;

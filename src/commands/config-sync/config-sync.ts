@@ -1,5 +1,5 @@
 export interface ConfigSyncOptions {
-  config?: string;
+  awsProfile?: string;
 }
 
 export interface SyncConfig {
