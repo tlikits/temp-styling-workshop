@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { UploadManager } from '../../upload-manager';
 import { CliCommand } from '../cli-command';
-import { ConfigSyncOptions } from './config-sync';
+import { ConfigSyncOptions } from './types';
 import { GlobalConfiguration } from '../../global-configuration';
 
 export class ConfigSyncCommandImpl implements CliCommand<ConfigSyncOptions> {
