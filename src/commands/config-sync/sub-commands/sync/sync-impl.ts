@@ -6,8 +6,6 @@ import { UploadManager } from '../../../../upload-manager';
 import { SyncCommand, SyncOptions } from './types';
 
 export class SyncCommandImpl implements SyncCommand {
-  private targetPath!: string;
-
   constructor(
     private readonly globalConfiguration: GlobalConfiguration,
     private readonly uploadManager: UploadManager,
