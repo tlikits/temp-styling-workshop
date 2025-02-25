@@ -50,7 +50,7 @@ jobs:
         with:
           repo_owner: vrnithinkumar
           repo_name: latest-deployment-sha
-          environment: production
+          environment: uat
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
