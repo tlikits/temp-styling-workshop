@@ -1,30 +1,44 @@
-name: Deploy
+name: Push
 
 on:
   push:
     branches:
       - testing
-  workflow_dispatch:
 
 jobs:
-  job1:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Echo job 1
-        run: echo "This is job 1"
+      - name: Echo - Build
+        run: echo "Build step"
 
-  job2:
+  test:
     runs-on: ubuntu-latest
-    needs: job1
+    needs: build
+    steps:
+      - name: Echo - Test
+        run: echo "Test step"
+
+  deploy-dev:
+    runs-on: ubuntu-latest
+    needs: test
+    environment: dev
+    steps:
+      - name: Echo - Dev
+        run: echo "TODO - Deploy to Dev"
+
+  deploy-uat:
+    runs-on: ubuntu-latest
+    needs: test
     environment: uat
     steps:
-      - name: Echo job 2
-        run: echo "This is job 2 - test"
+      - name: Echo - UAT
+        run: echo "TODO - Deploy to UAT"
 
-  job3:
+  deploy-prod:
     runs-on: ubuntu-latest
-    needs: job2
+    needs: test
     environment: prod
     steps:
-      - name: Echo job 3
-        run: echo "This is job 3"
+      - name: Echo - Prod
+        run: echo "TODO - Deploy to Prod"
