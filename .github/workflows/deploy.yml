@@ -24,8 +24,17 @@ jobs:
     needs: test
     environment: dev
     steps:
-      - name: Echo - Dev
-        run: echo "TODO - Deploy to Dev"
+      - name: Echo - DEV
+        run: echo "TODO - Deploy to DEV"
+
+      - name: echo SHA
+        run: echo "SHA $GITHUB_SHA"
+
+      # - name: Upload Last Deployment SHA
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: last_deploy_sha
+      #     path: last_deploy_sha.txt
 
   deploy-uat:
     runs-on: ubuntu-latest
@@ -34,6 +43,20 @@ jobs:
     steps:
       - name: Echo - UAT
         run: echo "TODO - Deploy to UAT"
+
+      - name: Get sha of latest deployment in main branch
+        id: latest-deployment-sha
+        uses: vrnithinkumar/latest-deployment-sha@v1.0.0
+        with:
+          repo_owner: vrnithinkumar
+          repo_name: latest-deployment-sha
+          environment: production
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Print latest deployment sha
+        id: output
+        run: echo "${{ steps.latest-deployment-sha.outputs.sha }}"
 
   deploy-prod:
     runs-on: ubuntu-latest
