@@ -1,4 +1,5 @@
 name: Manual Deploy
+run-name: 'Manual Deploy to ${{ github.event.inputs.environment }}: ${{ github.head_ref }} by @${{ github.actor }}'
 
 on:
   workflow_dispatch:
@@ -26,4 +27,4 @@ jobs:
     needs: validate
     steps:
       - name: Echo - Deploy
-        run: echo "Deploy"
+        run: echo "Deploy to ${{ github.event.inputs.environment }}"
