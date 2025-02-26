@@ -15,6 +15,18 @@ jobs:
   tag:
     runs-on: ubuntu-latest
     environment: tag
+    needs: validate
     steps:
       - name: Echo - Tag
-        run: echo "Tag step"
+        run: echo "Tag step - ${{ github.event.commits.id }}"
+
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/v${{ github.event.commits.id }}',
+              sha: context.sha
+            })

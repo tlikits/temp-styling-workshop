@@ -14,9 +14,16 @@ on:
           - prod
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo - Validate
+        run: echo "Validate step"
+
   deploy:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
+    needs: validate
     steps:
       - name: Echo - Deploy
         run: echo "Deploy"
