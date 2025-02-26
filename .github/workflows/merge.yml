@@ -1,0 +1,21 @@
+name: Merge
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo - Validate
+        run: echo "Validate step"
+
+  tag:
+    runs-on: ubuntu-latest
+    environment: tag
+    needs: build
+    steps:
+      - name: Echo - Tag
+        run: echo "Tag step"

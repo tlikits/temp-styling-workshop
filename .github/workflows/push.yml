@@ -1,0 +1,13 @@
+name: Push
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo - Validate
+        run: echo "Validate step"
