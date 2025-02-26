@@ -11,3 +11,10 @@ jobs:
     steps:
       - name: Echo - Validate
         run: echo "Validate step"
+
+      - name: Test
+        run: echo "github.event.after - ${{ github.event.after }}"
+      - name: Test2
+        run: echo "github.event.base_ref - ${{ github.event.base_ref }}"
+      - name: Test2
+        run: echo "github.event.before - ${{ github.event.before }}"
