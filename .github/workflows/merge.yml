@@ -18,7 +18,7 @@ jobs:
     needs: validate
     steps:
       - name: Echo - Tag
-        run: echo "Tag step - ${{ github.event.commits.id }}"
+        run: echo "Tag step - ${{ github.event.after }}"
 
       - name: Create tag
         uses: actions/github-script@v5
@@ -27,6 +27,6 @@ jobs:
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/v${{ github.event.commits.id }}',
+              ref: 'refs/tags/v${{ github.event.after }}',
               sha: context.sha
             })
