@@ -1,5 +1,5 @@
 name: Manual Deploy
-run-name: 'Manual Deploy to ${{ github.event.inputs.environment }}: ${{ github.head_ref }} by @${{ github.actor }}'
+run-name: '[Manual Deploy] to ${{ github.event.inputs.environment }}: ${{ github.event.ref }} by @${{ github.actor }}'
 
 on:
   workflow_dispatch:
@@ -28,3 +28,12 @@ jobs:
     steps:
       - name: Echo - Deploy
         run: echo "Deploy to ${{ github.event.inputs.environment }}"
+
+      - name: echo SHA
+        run: echo "SHA $GITHUB_SHA"
+      - name: Test
+        run: echo "github.event.after - ${{ github.event.after }}"
+      - name: Test2
+        run: echo "github.event.base_ref - ${{ github.event.base_ref }}"
+      - name: Test2
+        run: echo "github.event.before - ${{ github.event.before }}"

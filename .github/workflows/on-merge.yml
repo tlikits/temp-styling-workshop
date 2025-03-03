@@ -1,0 +1,63 @@
+name: On Merge
+run-name: '[On Merge] ${{ github.event.head_commit.message }} by @${{ github.actor }}'
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo - Validate
+        run: echo "Validate step"
+      - name: Test
+        run: echo "github.event.after - ${{ github.event.after }}"
+      - name: Test2
+        run: echo "github.event.base_ref - ${{ github.event.base_ref }}"
+      - name: Test2
+        run: echo "github.event.before - ${{ github.event.before }}"
+
+  tag:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: version-tagging
+    environment: tag
+    needs: validate
+    steps:
+      - name: Echo - Tag
+        run: echo "Tag step - ${{ github.event.after }}"
+
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          github-token: ''
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/v${{ github.event.after }}',
+              sha: context.sha
+            })
+
+      - name: Trigger Deployment
+        uses: actions/github-script@v5
+        with:
+          github-token: ''
+          script: |
+            try {
+              const result = await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'on-tag.yml',
+                ref: 'refs/tags/v${{ github.event.after }}',
+                inputs: {
+                  tags: ${{ github.event.after }}
+                },
+              })
+              console.log(result);
+            } catch(error) {
+              console.error(error);
+              core.setFailed(error);
+            }
