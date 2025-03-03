@@ -32,7 +32,6 @@ jobs:
       - name: Create tag
         uses: actions/github-script@v5
         with:
-          github-token: ''
           script: |
             github.rest.git.createRef({
               owner: context.repo.owner,
