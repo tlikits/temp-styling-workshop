@@ -34,6 +34,10 @@ jobs:
         run: echo "github.event.base_ref - ${{ github.event.base_ref }}"
       - name: Test2
         run: echo "github.event.before - ${{ github.event.before }}"
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
 
   deploy-uat:
     runs-on: ubuntu-latest
@@ -53,6 +57,10 @@ jobs:
         run: echo "github.event.base_ref - ${{ github.event.base_ref }}"
       - name: Test2
         run: echo "github.event.before - ${{ github.event.before }}"
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
 
       # - name: Get sha of latest deployment in main branch
       #   id: latest-deployment-sha
@@ -86,6 +94,10 @@ jobs:
         run: echo "github.event.base_ref - ${{ github.event.base_ref }}"
       - name: Test2
         run: echo "github.event.before - ${{ github.event.before }}"
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
 
       # - name: Get sha of latest deployment in main branch
       #   id: latest-deployment-sha
