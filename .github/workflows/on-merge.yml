@@ -51,7 +51,7 @@ jobs:
                 workflow_id: 'on-tag.yml',
                 ref: 'refs/tags/v${{ github.event.after }}',
                 inputs: {
-                  tags: ${{ github.event.after }}
+                  tags: "v${{ github.event.after }}"
                 },
               })
               console.log(result);
