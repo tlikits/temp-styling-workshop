@@ -1,5 +1,5 @@
 name: On Tag
-run-name: '[On Tag] Tagging on by @${{ github.actor }}'
+run-name: '[On Tag] Tagging'
 
 on:
   workflow_dispatch:

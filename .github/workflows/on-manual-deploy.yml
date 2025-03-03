@@ -1,5 +1,5 @@
 name: Manual Deploy
-run-name: '[Manual Deploy] to ${{ github.event.inputs.environment }}: ${{ github.event.ref }} by @${{ github.actor }}'
+run-name: '[Manual Deploy] to ${{ github.event.inputs.environment }}: ${{ github.event.ref }}'
 
 on:
   workflow_dispatch:

@@ -1,5 +1,5 @@
 name: On Push
-run-name: '[On Push] ${{ github.event.head_commit.message }} by @${{ github.actor }}'
+run-name: '[On Push] ${{ github.event.head_commit.message }}'
 
 on:
   push:
@@ -19,3 +19,44 @@ jobs:
         run: echo "github.event.base_ref - ${{ github.event.base_ref }}"
       - name: Test2
         run: echo "github.event.before - ${{ github.event.before }}"
+
+  test:
+    runs-on: ubuntu-latest
+    needs: validate
+    environment: dev
+    steps:
+      - name: Echo - Test
+        run: echo "Test step"
+      - name: Get List Deployment
+        uses: actions/github-script@v5
+        with:
+          script: |
+            try {
+              const listDeploymentsResult = await github.rest.repos.listDeployments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                environment: 'prod'
+              })
+              const items = listDeploymentsResult.data;
+              for (const item of items) {
+                const listDeploymentStatusesResult = await github.rest.repos.listDeploymentStatuses({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  deployment_id: item.id,
+                });
+                const statusItems = listDeploymentStatusesResult.data;
+                const successStatusItem = statusItems.find(statusItem => statusItem.state === 'success');
+                if (successStatusItem) {
+                  console.log(item.sha);
+                  break;
+                }
+              }
+            } catch(error) {
+              console.error(error);
+              core.setFailed(error);
+            }
+
+#         octokit.rest.repos.listDeployments({
+#   owner,
+#   repo,
+# });
