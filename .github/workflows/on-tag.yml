@@ -1,0 +1,102 @@
+name: On Tag
+run-name: '[On Tag] Tagging on by @${{ github.actor }}'
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        required: true
+        description: Tag to deploy
+        type: string
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo - Validate
+        run: echo "Validate step"
+
+  deploy-dev:
+    runs-on: ubuntu-latest
+    needs: validate
+    concurrency:
+      group: dev-deploy
+    environment: dev
+    steps:
+      - name: Echo - DEV
+        run: echo "TODO - Deploy to DEV"
+
+      - name: echo SHA
+        run: echo "SHA $GITHUB_SHA"
+      - name: Test
+        run: echo "github.event.after - ${{ github.event.after }}"
+      - name: Test2
+        run: echo "github.event.base_ref - ${{ github.event.base_ref }}"
+      - name: Test2
+        run: echo "github.event.before - ${{ github.event.before }}"
+
+  deploy-uat:
+    runs-on: ubuntu-latest
+    needs: validate
+    concurrency:
+      group: uat-deploy
+    environment: uat
+    steps:
+      - name: Echo - UAT
+        run: echo "TODO - Deploy to UAT"
+
+      - name: echo SHA
+        run: echo "SHA $GITHUB_SHA"
+      - name: Test
+        run: echo "github.event.after - ${{ github.event.after }}"
+      - name: Test2
+        run: echo "github.event.base_ref - ${{ github.event.base_ref }}"
+      - name: Test2
+        run: echo "github.event.before - ${{ github.event.before }}"
+
+      # - name: Get sha of latest deployment in main branch
+      #   id: latest-deployment-sha
+      #   uses: vrnithinkumar/latest-deployment-sha@v1.0.0
+      #   with:
+      #     repo_owner: vrnithinkumar
+      #     repo_name: latest-deployment-sha
+      #     environment: uat
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Print latest deployment sha
+      #   id: output
+      #   run: echo "${{ steps.latest-deployment-sha.outputs.sha }}"
+
+  deploy-prod:
+    runs-on: ubuntu-latest
+    needs: validate
+    concurrency:
+      group: prod-deploy
+    environment: prod
+    steps:
+      - name: Echo - Prod
+        run: echo "TODO - Deploy to Prod"
+
+      - name: echo SHA
+        run: echo "SHA $GITHUB_SHA"
+      - name: Test
+        run: echo "github.event.after - ${{ github.event.after }}"
+      - name: Test2
+        run: echo "github.event.base_ref - ${{ github.event.base_ref }}"
+      - name: Test2
+        run: echo "github.event.before - ${{ github.event.before }}"
+
+      # - name: Get sha of latest deployment in main branch
+      #   id: latest-deployment-sha
+      #   uses: vrnithinkumar/latest-deployment-sha@v1.0.0
+      #   with:
+      #     repo_owner: vrnithinkumar
+      #     repo_name: latest-deployment-sha
+      #     environment: uat
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Print latest deployment sha
+      #   id: output
+      #   run: echo "${{ steps.latest-deployment-sha.outputs.sha }}"

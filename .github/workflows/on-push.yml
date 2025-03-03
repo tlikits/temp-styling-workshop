@@ -1,5 +1,5 @@
 name: On Push
-run-name: '[On Push] ${{ github.event.head_commit.message }} - ${{ github.sha }} by @${{ github.actor }}'
+run-name: '[On Push] ${{ github.event.head_commit.message }} by @${{ github.actor }}'
 
 on:
   push:
